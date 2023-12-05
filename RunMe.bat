@@ -1,0 +1,2 @@
+cls
+py CVDetectionTestScript.py

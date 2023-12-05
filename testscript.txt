@@ -1,0 +1,65 @@
+import cv2
+import pytesseract
+
+# Set the path to the Tesseract executable (update this according to your installation)
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+def detect_multiple_texts_in_video(video_path, target_texts, frame_interval=10, display_duration=2000, ignore_range=5, display_scale=0.5):
+    # Open the video file
+    cap = cv2.VideoCapture(video_path)
+
+    # Get video properties
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    # Array to store timestamps
+    timestamps = []
+
+    # Iterate through frames with the specified interval
+    for frame_number in range(0, total_frames, frame_interval):
+        # Set the frame position to the current frame number
+        cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
+
+        # Read the frame
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Apply a negative filter to invert colors
+        inverted_frame = cv2.bitwise_not(frame)
+
+        # Convert the inverted frame to grayscale
+        gray_frame = cv2.cvtColor(inverted_frame, cv2.COLOR_BGR2GRAY)
+
+        # Perform OCR on the frame
+        text = pytesseract.image_to_string(gray_frame)
+
+        # Check if any of the target texts are present
+        for target_text in target_texts:
+            if target_text.lower() in text.lower():  # Case-insensitive comparison
+                # Calculate the timestamp
+                timestamp = frame_number / fps
+
+                # Check if the timestamp is within the ignore range of any previous detection
+                if not any(abs(prev_timestamp - timestamp) < ignore_range for prev_timestamp in timestamps):
+                    print(f"{target_text} detected at timestamp: {timestamp:.2f} seconds")
+					# Resize the frame for display
+					#resized_frame = cv2.resize(frame, None, fx=display_scale, fy=display_scale)
+                    # Display the frame where the text was found
+                    cv2.imshow('Frame with Text', frame)
+                    cv2.waitKey(display_duration)  # Wait for display_duration milliseconds
+                    timestamps.append(timestamp)  # Store the timestamp in the array
+
+    # Release the video capture object
+    cap.release()
+    cv2.destroyAllWindows()
+
+    return timestamps
+
+# Example usage with multiple target texts
+video_path = r'G:\CVDETECTIONTEST\Montage.mp4'
+target_texts = ['KNOCKED DOWN', 'ELIMINATED', 'ELINIMATION']
+timestamps = detect_multiple_texts_in_video(video_path, target_texts, frame_interval=60, display_duration=1, ignore_range=5, display_scale=0.5)
+
+# Print the array of timestamps
+print("Timestamps:", timestamps)

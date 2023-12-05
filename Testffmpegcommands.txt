@@ -1,0 +1,20 @@
+ffmpeg -ss 65 -i Montage.mp4 -t 10 -map 0 -c copy out.mp4
+
+ffmpeg -y -ss 65 -i Montage.mp4 -t 10  -c:v h264_nvenc -profile:v high -bf 2 -preset slow out.mp4
+
+ffmpeg -y -ss 65 -i Montage.mp4 -t 10  -c:v h264_nvenc -profile:v high -b:v 6M -minrate 6M -maxrate 6M -bufsize 12M -bf 2 -preset slow out.mp4
+
+ffmpeg -y -ss 65 -i Montage.mp4 -t 10 -acodec copy -vcodec copy out.mp4
+
+ffmpeg -y -copyts -ss 65 -i Montage.mp4 -t 10 -acodec copy -vcodec copy output.mp4
+
+ffmpeg -y -noaccurate_seek -ss 65 -i Montage.mp4 -t 10 -acodec copy -vcodec copy output.mp4
+
+ffmpeg -y -ss 65 -i Montage.mp4 -t 10 -acodec copy -vcodec copy -avoid_negative_ts 1 output.mp4
+
+ffmpeg -y -ss 67 -i Montage.mp4 -t 10 -acodec copy -vcodec copy -avoid_negative_ts 1 output.mp4
+
+
+ffmpeg -y -ss 2965 -i "G:\TWITCH VOD\[2023-11-28] - 1989484559 - 18 [TamilEng] diamond this season season 19 apexproplay Apex apexlegends tamilgaming tfnots.mp4" -t 70 -acodec copy -vcodec copy out.mp4
+
+
