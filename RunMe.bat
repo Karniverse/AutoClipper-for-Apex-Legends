@@ -1,2 +1,2 @@
 cls
-py CVDetectionTestScript.py
+py CVDetectionTestScript-PE-MT.py

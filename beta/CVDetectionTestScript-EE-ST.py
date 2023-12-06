@@ -98,8 +98,8 @@ def detect_multiple_texts_in_video(video_path, target_texts, frame_interval=10, 
         if timestamps:
             for timestamp in timestamps:
                 # Replace the following command with your desired command
-                print(f"ffmpeg -y -ss {int(timestamp)-4} -i \"{video_path}\" -t 10 -acodec copy -vcodec copy -avoid_negative_ts 1 \"{output_folder}\\{int(timestamp)}-{target_text}.mp4\"")			
-                command = f"ffmpeg -y -ss {int(timestamp)-4} -i \"{video_path}\" -t 10 -acodec copy -vcodec copy -avoid_negative_ts 1 \"{output_folder}\\{int(timestamp)}-{target_text}.mp4\""
+                print(f".\\ffmpeg\\bin\\ffmpeg -y -ss {int(timestamp)-4} -i \"{video_path}\" -t 10 -acodec copy -vcodec copy -avoid_negative_ts 1 \"{output_folder}\\{int(timestamp)}-{target_text}.mp4\"")			
+                command = f".\\ffmpeg\\bin\\ffmpeg -y -ss {int(timestamp)-4} -i \"{video_path}\" -t 10 -acodec copy -vcodec copy -avoid_negative_ts 1 \"{output_folder}\\{int(timestamp)}-{target_text}.mp4\""
                 subprocess.run(command, shell=True)
 	
 	# Record the end time
